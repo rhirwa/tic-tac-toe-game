@@ -1,0 +1,2 @@
+# Processing Tic-Tac-Toe Next Move
+This little program features emulates a version of tic-tac-toe where the players input the game status in the command line, along with they player mark, and the intended position. The program takes in those entries, processes the games' status, and executes the play while outputing the appropriate messages depending on the play. It can either print out that a move was placed the intended position, or that it is invalid or that the position is already taken. Finally when all the moves have been made, the game will output the winner. 
