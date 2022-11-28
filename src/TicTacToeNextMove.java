@@ -4,22 +4,21 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TicTacToeNextMove {
-
+	/**
+	 * this method takes in the input file and returns its version of an array list
+	 * @param inputFile
+	 * @return
+	 */
 	public static ArrayList<String> getBoard(String inputFile) {
 		ArrayList<String> gameBoard = new ArrayList<>();
 		try (Scanner s = new Scanner(new File(inputFile))){
+			s.nextLine();
 			while(s.hasNext()) {
 				String line = s.nextLine();
 				String tokens[] = line.split(" ");
 				gameBoard.add(tokens[0]);
 				gameBoard.add(tokens[1]);
 				gameBoard.add(tokens[2]);
-				gameBoard.add(tokens[3]);
-				gameBoard.add(tokens[4]);
-				gameBoard.add(tokens[5]);
-				gameBoard.add(tokens[6]);
-				gameBoard.add(tokens[7]);
-				gameBoard.add(tokens[8]);
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -27,16 +26,27 @@ public class TicTacToeNextMove {
 		return gameBoard;
 	}
 	
+	/**
+	 * This method takes in an array list and returns indices without any player mark
+	 * @param board
+	 * @return
+	 */
 	public static ArrayList<Integer> getStatus(ArrayList<String> board) {
 		ArrayList<Integer> emptyIndices = new ArrayList<>();
 		for(int i=0; i<board.size(); i++) {
-			if(board.get(i).isBlank()) {
+			if(board.get(i).equals("-")) {
 				 emptyIndices.add(i);
 			}
 		}
 		return emptyIndices;
 	}
 	
+	/**
+	 * this method returns the player intended position in a single digit 1d
+	 * @param row
+	 * @param col
+	 * @return
+	 */
 	public static int getPosition(int row, int col) {
 		int pos = 0;
 		if(row == 1 && col == 1) {
@@ -69,13 +79,24 @@ public class TicTacToeNextMove {
 		return pos;
 	}
 	
+	/**
+	 * this method executes a player's intended move by taking in the game board and considering its positions to determine
+	 * if the move is correct and if the move is a winner and outputs an appropriate message. 
+	 * @param gameBoard
+	 * @param emptyIndices
+	 * @param playMark
+	 * @param pos
+	 * @param row
+	 * @param col
+	 */
 	public static void executePlay(ArrayList<String> gameBoard, ArrayList<Integer> emptyIndices, String playMark, int pos, int row, int col) {
-		for(int e: emptyIndices) {
+		outer: for(int e: emptyIndices) {
 			if(pos != e) {
-				System.out.printf("Position %d, %d is already taken!", row, col);
-			} else if( pos == e) {
+				System.out.printf("Position %d, %d is already taken! \n", row, col);
+				break outer;
+			} else if(pos == e) {
 				gameBoard.set(e, playMark);
-				System.out.printf("Mark %s was placed on row %d, col %d!", playMark, row, col);	
+				System.out.printf("Mark %s was placed on row %d, col %d! \n", playMark, row, col);	
 				
 		        for (int i = 0; i < gameBoard.size(); i++) {
 		            String line = null;
@@ -108,9 +129,11 @@ public class TicTacToeNextMove {
 		            }
 		            if (line.equals("XXX")) {
 		                System.out.printf("Player 1 is the WINNER!");
+		                break outer;
 		            }
 		            else if (line.equals("OOO")) {
 		                System.out.println("Player 2 is the WINNER!");
+		                break outer;
 		    		}
 		        }
             }
